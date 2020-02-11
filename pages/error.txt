@@ -1,0 +1,4 @@
+  File "pages/code.py", line 1
+    +99+87=0=
+            ^
+SyntaxError: invalid syntax
