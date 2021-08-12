@@ -5,32 +5,51 @@ def index(request):
       
     return render(request,"index.html")
 def compile(request):
-    code=request.GET['codebox']
-    code=str(code)
-    codefile=open("pages/code.py","w+")
-    codefile.write(code)
-    codefile.close()
-    os.system("python pages/code.py > pages/result.txt 2>pages/error.txt")
-    file=open("pages/result.txt")
-    result=""
-    error=""
-    errorfile=open("pages/error.txt")
-    for i in errorfile.readlines():
-        error+=i
-    errorfile.seek(0)
+    import random, string
+    code=request.GET['code']
+    language=request.GET['language']
+    language=language.lower()
+    random = ''.join(random.choices(string.ascii_letters + string.digits, k=7))
+    filePath = "pages/temp/"+random+"."+language
+    programFile = open(filePath, "w")
+    programFile.write(code)
+    programFile.close()
+    if(language == "python"):
+        output = os.system("python "+filePath+" > pages/result.html 2>pages/error.html")
+    if(language == "php"):
+        output = os.system("php "+filePath+" > pages/result.html 2>pages/error.html")
+        
+        
+    if(language == "c"):
+        outputExe = random + ".exe"
+        # outputExe = "pages/c/"+random + ".exe"
+        output = os.system("gcc "+filePath+" -o "+outputExe+" > pages/result.txt 2>pages/error.html")
+        # os.system("cd pages/c/ & "+random+".exe > pages/result.html")
+        os.system(random+".exe > pages/result.html")
+        
+    if(language == "cpp"):
+        outputExe = random + ".exe"
+        output = os.system("gcc "+filePath+" -o "+outputExe+" > pages/result.txt 2>pages/error.html")
+        os.system(outputExe+" > pages/result.html")  
+        
 
-    if len(error)<2:
-        for i in file.readlines():
-            result=result+i
-        return render(request,"compile.html",{'res':result,'pcode':code})
-        file.close()
+
+    if (output):
+        return render(request,"error.html")       
     else:
-        errorfile.seek(0)
-        for i in errorfile.readlines():
-            error+=i
-        return render(request,"compile.html",{'res':error,'pcode':code})
-code=""
-
+        return render(request,"result.html")
+          
     
-
-
+def download(request):
+    import random, string
+    code=request.GET['code']
+    language=request.GET['language']
+    language=language.lower()
+    random = ''.join(random.choices(string.ascii_letters + string.digits, k=7))
+    filePath = "pages/temp/"+random+"."+language
+    programFile = open(filePath, "w")
+    programFile.write(code)
+    programFile.close()
+    output = filePath
+    return render(request,"download.html",{"outputis":output})
+ 
