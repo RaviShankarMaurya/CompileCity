@@ -1,13 +1,44 @@
 <html>
     <head>
-        <title>Online compiler</title>
-    </head>
-    <body bgcolor="pink" >
-            <form action="compile" >
-            <h1 align="left">write your Python codes</h1>
-            <input type="submit" name="submit" value="Run"><br>
-            <textarea name="codebox" style=height:400;width:805;></textarea>
-            <textarea name="coderesult" style=height:400;width:430;background:black;color:blanchedalmond;></textarea>
-            <br></form>
+        <title>Compile City</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    
+</head>
+<body>
+
+    
+    
+    <div class="button-container">
+    <button class="btn" onclick="executeCode()"> Run </button>
+	<button type="button" class="btn btn-primary" onclick="Redirect()">New File</button>
+	<button type="button" class="btn btn-primary">Save</button>
+	<button type="button" class="btn btn-primary" onclick="Share()">Share</button>
+	<a type="button" class="btn btn-primary" id="download" onclick="downloadCode()" download>Download</a>
+    <button id="fullscreen" type="button" class="btn btn-primary" onclick="openCloseFullscreen()">Full Screen</button>
+    </div>
+    
+        <div class="control-panel">
+        Select Language:
+        &nbsp; &nbsp;
+        <select id="languages" class="languages" onchange="changeLanguage()">
+            <option value="c"> C </option>
+            <option value="cpp"> C++ </option>
+            <option value="php"> PHP </option>
+            <option value="python"> Python </option>
+        </select>
+    </div>
+   <div class="editor" id="editor"></div>
+
+    <div class="header"> Compile City </div>
+
+    <div class="output"></div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{% static 'js/lib/ace.js' %}"></script>
+    <script src="{% static 'js/lib/theme-monokai.js' %}"></script>
+    <script src="{% static 'js/ide.js' %}"></script>
+       
+
 </body>
 </html>
